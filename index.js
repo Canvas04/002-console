@@ -50,6 +50,7 @@ yargs.command({
   describe: "returns a date earlier than the one entered",
   builder: {
     month: {
+      description: "returns a date earlier than the one entered",
       type: "string",
     },
   },
