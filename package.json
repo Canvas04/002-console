@@ -1,0 +1,14 @@
+{
+  "name": "coin_flip",
+  "version": "1.0.0",
+  "description": "2 консольные утилиты. 1 утилита : Утилита получения текущей даты и времени. 2 утилита :  Утилита командной строки, которая играет в игру \"Загадай число\".",
+  "main": "index.js",
+  "bin": {
+    "coin-flip": "./coinFlip.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
