@@ -9,9 +9,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-//  fs.writeFile(gameResults, String(userInput), (err) => {
-//         if (err) throw Error(err);
-//       });
+
 rl.question(
   "Игра загадывает случайное число (1 или 2). Попробуйте отгадать",
   () => {
