@@ -9,7 +9,6 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-
 rl.question(
   "Игра загадывает случайное число (1 или 2). Попробуйте отгадать",
   () => {
@@ -19,13 +18,14 @@ rl.question(
     rl.on("line", (line) => {
       const userInput = Number(line);
 
+      fs.appendFile(process.argv[2], String(userInput), (err) => {
+        if (err) throw Error(err);
+      });
+
       if (userInput !== resultNumber) {
         console.log("Попробуйте еще раз");
       } else if (userInput === resultNumber) {
-       
-        fs.writeFile(process.argv[2],String(userInput),err => {
-            if (err) throw Error(err)
-        })
+
         rl.close();
       }
     });
