@@ -25,7 +25,6 @@ rl.question(
       if (userInput !== resultNumber) {
         console.log("Попробуйте еще раз");
       } else if (userInput === resultNumber) {
-
         rl.close();
       }
     });
