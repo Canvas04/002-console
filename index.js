@@ -5,9 +5,11 @@ const url = require("url");
 
 const { MY_API_KEY } = require("./config.js");
 
-const urlForRequest = `https://api.weatherstack.com/forecast
-? access_key = ${MY_API_KEY}
-& query = New York`;
+let getCurrentCity = (value) => value;
+
+// const urlForRequest = `https://api.weatherstack.com/forecast
+// ? access_key = ${MY_API_KEY}
+// & query = ${currentCity}`;
 
 const layoutStart = `
   <link
@@ -19,6 +21,33 @@ const layoutStart = `
     <div class="container pt-5">
 `;
 
+const formComponent = () => {
+  const onSubmitHandler = (e) => {
+    e.preventDefault()
+    const cityValue = e.target.city.value;
+    console.log(cityValue)
+  };
+  return `
+<form 
+method="POST"
+onsubmit="(${onSubmitHandler})(event)"
+>
+<input 
+name='city'
+type='text'
+/>
+<button
+class="btn btn-sm btn-outline-success" 
+type="submit"
+>
+сохранить
+</button>
+</form>
+`;
+};
+
+const layoutEnd = `</div>`;
+
 const server = http
   .createServer((req, res) => {
     const urlParsed = url.parse(req.url, true);
@@ -27,9 +56,14 @@ const server = http
 
     res.setHeader("Content-Type", "text/html; charset=utf-8");
 
-    if(pathname === '/') {
-        res.write(layoutStart)
-        res.write(`<h3>Вывод погоды по определенному городу</h3>`)
+    if (pathname === "/") {
+      res.write(layoutStart);
+      res.write(`<h3>Вывод погоды по определенному городу</h3>`);
+      res.write(formComponent());
+      res.write(layoutEnd);
+    
     }
+
+    res.end();
   })
   .listen(3023);
