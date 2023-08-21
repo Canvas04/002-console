@@ -27,14 +27,20 @@ rl.question(
           res.setEncoding("utf-8");
           let rowData = "";
           res.on("data", (chunk) => (rowData += chunk));
-          res.on("end", () => {
-            let parseData = JSON.parse(rowData);
-            console.log(
-              `Погода ${parseData.current.temperature} градусов по Цельсию`
-            );
-          });
+          res
+            .on("end", () => {
+              let parseData = JSON.parse(rowData);
+              console.log(
+                `Погода ${parseData.current.temperature} градусов по Цельсию`
+              );
+            })
+            .on("end", () => {
+              rl.close();
+            });
         }
       );
+    }).on("error", (err) => {
+      console.log(err);
     });
   }
 );

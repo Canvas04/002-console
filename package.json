@@ -4,7 +4,6 @@
   "description": "Вывод прогноза погоды для конкретного города.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
     "dev": "node -r dotenv/config index.js"
   },
   "author": "",
