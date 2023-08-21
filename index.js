@@ -1,69 +1,40 @@
-//Нужно написать вывод погоды
-//В качестве параметров принимается название города для которого нужно вывести прогноз
 const http = require("http");
-const url = require("url");
+const readline = require("node:readline");
+const path = require("path");
 
 const { MY_API_KEY } = require("./config.js");
 
-let getCurrentCity = (value) => value;
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-// const urlForRequest = `https://api.weatherstack.com/forecast
-// ? access_key = ${MY_API_KEY}
-// & query = ${currentCity}`;
+rl.question(
+  "Введите город на английском , для которого нужно вывести прогноз",
+  () => {
+    rl.on("line", (line) => {
+      const currentCity = line;
+      http.get(
+        `http://api.weatherstack.com/forecast?access_key=${MY_API_KEY}&query=${currentCity}`,
+        (res) => {
+          const { statusCode } = res;
 
-const layoutStart = `
-  <link
-    rel="stylesheet" 
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
-    crossorigin="anonymous"
-  />
-    <div class="container pt-5">
-`;
+          if (statusCode !== 200) {
+            console.log(`statusCode: ${statusCode}`);
+            return;
+          }
 
-const formComponent = () => {
-  const onSubmitHandler = (e) => {
-    e.preventDefault()
-    const cityValue = e.target.city.value;
-    console.log(cityValue)
-  };
-  return `
-<form 
-method="POST"
-onsubmit="(${onSubmitHandler})(event)"
->
-<input 
-name='city'
-type='text'
-/>
-<button
-class="btn btn-sm btn-outline-success" 
-type="submit"
->
-сохранить
-</button>
-</form>
-`;
-};
-
-const layoutEnd = `</div>`;
-
-const server = http
-  .createServer((req, res) => {
-    const urlParsed = url.parse(req.url, true);
-    const { pathname, query } = urlParsed;
-    const { method } = req;
-
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-
-    if (pathname === "/") {
-      res.write(layoutStart);
-      res.write(`<h3>Вывод погоды по определенному городу</h3>`);
-      res.write(formComponent());
-      res.write(layoutEnd);
-    
-    }
-
-    res.end();
-  })
-  .listen(3023);
+          res.setEncoding("utf-8");
+          let rowData = "";
+          res.on("data", (chunk) => (rowData += chunk));
+          res.on("end", () => {
+            let parseData = JSON.parse(rowData);
+            console.log(
+              `Погода ${parseData.current.temperature} градусов по Цельсию`
+            );
+          });
+        }
+      );
+    });
+  }
+);
