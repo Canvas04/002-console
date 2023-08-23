@@ -28,7 +28,7 @@ const stor = {
 };
 
 const app = express();
-app.use(express.json);
+app.use(express.json());
 
 app.get('/api/books', (req, res) => {
     const {todo} = stor
