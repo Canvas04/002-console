@@ -32,6 +32,7 @@ app.use(express.json());
 
 app.get("/api/books", (req, res) => {
   const { books } = stor;
+  console.log(books)
   res.json(books);
 });
 
@@ -41,7 +42,13 @@ app.post("/api/books", (req, res) => {
     req.body;
 
   const newBook = new Book(
-    id, title, description, authors, favorite, fileCover, fileName
+    id,
+    title,
+    description,
+    authors,
+    favorite,
+    fileCover,
+    fileName
   );
 
   books.push(newBook);
@@ -49,5 +56,20 @@ app.post("/api/books", (req, res) => {
   res.json(newBook);
 });
 
+app.get("/api/books/:id", (req, res) => {
+  const { books } = stor;
 
+  const { id } = req.params;
+
+  const idx = books.findIndex((book) => book.id === id);
+
+  if (idx !== -1) {
+    res.json(books[idx])
+    
+  } else {
+    res.status(404);
+    res.json("Книга не найдена");
+  }
+
+});
 app.listen(PORT);
