@@ -30,9 +30,29 @@ const stor = {
 const app = express();
 app.use(express.json());
 
-app.get('/api/books', (req, res) => {
-    const {todo} = stor
-    res.json(todo)
-})
+app.get("/api/books", (req, res) => {
+  const { books } = stor;
+  res.json(books);
+});
+
+app.post("/api/books", (req, res) => {
+  const { books } = stor;
+  const { title, description, authors, favorite, fileCover, fileName } =
+    req.body;
+
+  const newBook = new Book(
+    title,
+    description,
+    authors,
+    favorite,
+    fileCover,
+    fileName
+  );
+
+  books.push(newBook);
+  res.status(201);
+  res.json(newBook);
+});
+
 
 app.listen(PORT);
