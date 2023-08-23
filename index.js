@@ -37,16 +37,11 @@ app.get("/api/books", (req, res) => {
 
 app.post("/api/books", (req, res) => {
   const { books } = stor;
-  const { title, description, authors, favorite, fileCover, fileName } =
+  const { id, title, description, authors, favorite, fileCover, fileName } =
     req.body;
 
   const newBook = new Book(
-    title,
-    description,
-    authors,
-    favorite,
-    fileCover,
-    fileName
+    id, title, description, authors, favorite, fileCover, fileName
   );
 
   books.push(newBook);
