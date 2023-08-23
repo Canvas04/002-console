@@ -30,9 +30,8 @@ const stor = {
 const app = express();
 app.use(express.json);
 
-app.get('/', (req, res) => {
+app.get('/api/books', (req, res) => {
     const {todo} = stor
-    res.write('ehhehe')
     res.json(todo)
 })
 
