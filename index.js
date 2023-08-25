@@ -84,12 +84,25 @@ app.put("/api/books/:id", (req, res) => {
   const idx = books.findIndex((book) => book.id === id);
 
   if (idx !== -1) {
-   books[idx] = {...newBook,...books[idx]}
-   res.json(books[idx])
+    books[idx] = { ...books[idx] ,...newBook, };
+    res.json(books[idx]);
   } else {
     res.status(404);
     res.json("Книга не найдена");
   }
 });
+
+app.delete("/api/books/:id", (req, res) => {
+  const { books } = stor;
+
+  const { id } = req.params;
+
+  const idx = books.findIndex((book) => book.id === id);
+  if (idx !== -1) {
+    books.splice(idx, 1);
+    res.json("ok");
+  }
+});
+
 
 app.listen(PORT);
