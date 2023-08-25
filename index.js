@@ -1,7 +1,7 @@
 const express = require("express");
 const { v4: uuid } = require("uuid");
 
-const { PORT } = require("./config.js");
+const PORT = process.env.PORT || 3000
 
 class Book {
   constructor(
