@@ -76,4 +76,20 @@ app.get("/api/books/:id", (req, res) => {
   }
 });
 
+app.put("/api/books/:id", (req, res) => {
+  const { books } = stor;
+
+  const { id } = req.params;
+  const newBook = req.body;
+  const idx = books.findIndex((book) => book.id === id);
+
+  if (idx !== -1) {
+   books[idx] = {...newBook,...books[idx]}
+   res.json(books[idx])
+  } else {
+    res.status(404);
+    res.json("Книга не найдена");
+  }
+});
+
 app.listen(PORT);
