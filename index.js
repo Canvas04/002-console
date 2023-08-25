@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.get("/api/books", (req, res) => {
   const { books } = stor;
-  console.log(books)
+  console.log(books);
   res.json(books);
 });
 
@@ -56,6 +56,11 @@ app.post("/api/books", (req, res) => {
   res.json(newBook);
 });
 
+app.post("/api/user/login", (req, res) => {
+  res.status(201);
+  res.json({ id: 1, mail: "test@mail.ru" });
+});
+
 app.get("/api/books/:id", (req, res) => {
   const { books } = stor;
 
@@ -64,12 +69,11 @@ app.get("/api/books/:id", (req, res) => {
   const idx = books.findIndex((book) => book.id === id);
 
   if (idx !== -1) {
-    res.json(books[idx])
-    
+    res.json(books[idx]);
   } else {
     res.status(404);
     res.json("Книга не найдена");
   }
-
 });
+
 app.listen(PORT);
