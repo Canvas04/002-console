@@ -30,11 +30,32 @@ const stor = {
 const app = express();
 app.use(express.json());
 
+app.post("/api/user/login", (req, res) => {
+  res.status(201);
+  res.json({ id: 1, mail: "test@mail.ru" });
+});
+
 app.get("/api/books", (req, res) => {
   const { books } = stor;
   console.log(books);
   res.json(books);
 });
+
+app.get("/api/books/:id", (req, res) => {
+  const { books } = stor;
+
+  const { id } = req.params;
+
+  const idx = books.findIndex((book) => book.id === id);
+
+  if (idx !== -1) {
+    res.json(books[idx]);
+  } else {
+    res.status(404);
+    res.json("Книга не найдена");
+  }
+});
+
 
 app.post("/api/books", (req, res) => {
   const { books } = stor;
@@ -56,26 +77,6 @@ app.post("/api/books", (req, res) => {
   res.json(newBook);
 });
 
-app.post("/api/user/login", (req, res) => {
-  res.status(201);
-  res.json({ id: 1, mail: "test@mail.ru" });
-});
-
-app.get("/api/books/:id", (req, res) => {
-  const { books } = stor;
-
-  const { id } = req.params;
-
-  const idx = books.findIndex((book) => book.id === id);
-
-  if (idx !== -1) {
-    res.json(books[idx]);
-  } else {
-    res.status(404);
-    res.json("Книга не найдена");
-  }
-});
-
 app.put("/api/books/:id", (req, res) => {
   const { books } = stor;
 
@@ -84,7 +85,7 @@ app.put("/api/books/:id", (req, res) => {
   const idx = books.findIndex((book) => book.id === id);
 
   if (idx !== -1) {
-    books[idx] = { ...books[idx] ,...newBook, };
+    books[idx] = { ...books[idx], ...newBook };
     res.json(books[idx]);
   } else {
     res.status(404);
@@ -103,6 +104,5 @@ app.delete("/api/books/:id", (req, res) => {
     res.json("ok");
   }
 });
-
 
 app.listen(PORT);
